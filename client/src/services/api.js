@@ -29,11 +29,36 @@ const handleResponse = async (response) => {
 };
 
 export const api = {
+  get: async (endpoint, includeAuth = true) => {
+    const response = await fetch(`${BASE_URL}${endpoint}`, {
+      method: "GET",
+      headers: getHeaders(includeAuth),
+    });
+
+    return handleResponse(response);
+  },
   post: async (endpoint, body, includeAuth = true) => {
     const response = await fetch(`${BASE_URL}${endpoint}`, {
       method: "POST",
       headers: getHeaders(includeAuth),
       body: JSON.stringify(body),
+    });
+
+    return handleResponse(response);
+  },
+  put: async (endpoint, body, includeAuth = true) => {
+    const response = await fetch(`${BASE_URL}${endpoint}`, {
+      method: "PUT",
+      headers: getHeaders(includeAuth),
+      body: JSON.stringify(body),
+    });
+
+    return handleResponse(response);
+  },
+  delete: async (endpoint, includeAuth = true) => {
+    const response = await fetch(`${BASE_URL}${endpoint}`, {
+      method: "DELETE",
+      headers: getHeaders(includeAuth),
     });
 
     return handleResponse(response);

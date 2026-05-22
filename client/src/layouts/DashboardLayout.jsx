@@ -31,7 +31,7 @@ function DashboardLayout({ children }) {
       </div>
 
       {/* Main content */}
-      <div className="flex-1 min-w-0 lg:ml-0">
+      <div className="flex-1 min-w-0 lg:ml-72">
         <Navbar onMenuClick={() => setSidebarOpen(true)} />
         <main className="p-4 md:p-6 lg:p-8 overflow-y-auto">
           {children}

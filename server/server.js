@@ -57,7 +57,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Server
+// Server configuration
 const PORT = process.env.PORT || 8873;
 
 app.listen(PORT, () => {
