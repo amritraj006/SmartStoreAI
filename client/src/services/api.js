@@ -1,4 +1,4 @@
-const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8873/api";
+const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
 const getHeaders = () => {
   const headers = {
@@ -24,7 +24,6 @@ export const api = {
     const response = await fetch(`${BASE_URL}${endpoint}`, {
       method: "GET",
       headers: getHeaders(),
-      credentials: "include",
     });
     return handleResponse(response);
   },
@@ -34,7 +33,6 @@ export const api = {
       method: "POST",
       headers: getHeaders(),
       body: JSON.stringify(body),
-      credentials: "include",
     });
     return handleResponse(response);
   },
@@ -44,7 +42,6 @@ export const api = {
       method: "PUT",
       headers: getHeaders(),
       body: JSON.stringify(body),
-      credentials: "include",
     });
     return handleResponse(response);
   },
@@ -53,7 +50,6 @@ export const api = {
     const response = await fetch(`${BASE_URL}${endpoint}`, {
       method: "DELETE",
       headers: getHeaders(),
-      credentials: "include",
     });
     return handleResponse(response);
   },
