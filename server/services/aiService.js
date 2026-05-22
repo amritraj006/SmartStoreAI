@@ -1,42 +1,48 @@
 /**
  * AI Service to handle product content generation.
- * Connects to OpenAI API using native fetch, and falls back to a highly realistic template-based
+ * Connects to Google Gemini API using native fetch, and falls back to a highly realistic template-based
  * generator if the key is invalid or not provided.
  */
 
 const generateContent = async ({ title, category, price }) => {
-  const apiKey = process.env.OPENAI_API_KEY;
-  const isDummyKey = !apiKey || apiKey === "your_openai_api_key" || apiKey.trim() === "";
+  const apiKey = process.env.GEMINI_API_KEY;
+  const isDummyKey = !apiKey || apiKey === "your_gemini_api_key" || apiKey.trim() === "";
 
   if (!isDummyKey) {
     try {
-      console.log("Calling OpenAI completions API...");
-      const response = await fetch("https://api.openai.com/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${apiKey}`,
-        },
-        body: JSON.stringify({
-          model: "gpt-4o-mini",
-          messages: [
-            {
-              role: "system",
-              content:
-                "You are an expert e-commerce copywriter. Generate high-converting product content. You must return your response in raw JSON format matching this schema:\n{\n  \"description\": \"String (detailed product description)\",\n  \"seoTags\": [\"String (5-7 relevant tags for search engines)\"],\n  \"marketingCaptions\": \"String (social media marketing post with emojis)\"\n}\nDo not include any markdown styling like ```json or backticks.",
-            },
-            {
-              role: "user",
-              content: `Generate description, seoTags, and marketingCaptions for a product titled "${title}" in the category "${category}" priced at $${price}.`,
-            },
-          ],
-          temperature: 0.7,
-        }),
-      });
+      console.log("Calling Google Gemini API...");
+      const response = await fetch(
+        `https://generativeai.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            contents: [
+              {
+                parts: [
+                  {
+                    text: `You are an expert e-commerce copywriter. Generate high-converting product content. You must return your response in raw JSON format matching this schema:
+{
+  "description": "String (detailed product description)",
+  "seoTags": ["String (5-7 relevant tags for search engines)"],
+  "marketingCaptions": "String (social media marketing post with emojis)"
+}
+Do not include any markdown styling like \`\`\`json or backticks.
+
+Generate description, seoTags, and marketingCaptions for a product titled "${title}" in the category "${category}" priced at $${price}.`,
+                  },
+                ],
+              },
+            ],
+          }),
+        }
+      );
 
       if (response.ok) {
         const data = await response.json();
-        const contentStr = data.choices[0].message.content.trim();
+        const contentStr = data.candidates[0].content.parts[0].text.trim();
         // Parse JSON
         try {
           const parsed = JSON.parse(contentStr);
@@ -45,17 +51,17 @@ const generateContent = async ({ title, category, price }) => {
           }
         } catch (parseErr) {
           // If JSON parse fails, try extracting fields or clean string
-          console.warn("OpenAI response JSON parsing failed, trying cleanup...", parseErr);
+          console.warn("Gemini response JSON parsing failed, trying cleanup...", parseErr);
           const cleanStr = contentStr.replace(/```json/g, "").replace(/```/g, "").trim();
           const parsedCleaned = JSON.parse(cleanStr);
           return parsedCleaned;
         }
       } else {
         const errText = await response.text();
-        console.error("OpenAI API returned error status:", response.status, errText);
+        console.error("Gemini API returned error status:", response.status, errText);
       }
     } catch (error) {
-      console.error("OpenAI API fetch error, falling back to local generator:", error);
+      console.error("Gemini API fetch error, falling back to local generator:", error);
     }
   }
 

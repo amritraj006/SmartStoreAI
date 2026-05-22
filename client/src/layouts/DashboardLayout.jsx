@@ -15,18 +15,25 @@ function DashboardLayout({ children }) {
         />
       )}
 
-      {/* Sidebar */}
+      {/* Sidebar - Fixed position */}
       <div className={`
-        fixed lg:static z-30 transition-transform duration-300
-        ${sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
+        hidden lg:block fixed left-0 top-0 bottom-0 z-30 overflow-y-auto
+      `}>
+        <Sidebar onClose={() => setSidebarOpen(false)} />
+      </div>
+
+      {/* Mobile Sidebar */}
+      <div className={`
+        lg:hidden fixed left-0 top-0 bottom-0 z-30 transition-transform duration-300 overflow-y-auto
+        ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
       `}>
         <Sidebar onClose={() => setSidebarOpen(false)} />
       </div>
 
       {/* Main content */}
-      <div className="flex-1 min-w-0">
+      <div className="flex-1 min-w-0 lg:ml-0">
         <Navbar onMenuClick={() => setSidebarOpen(true)} />
-        <main className="p-4 md:p-6 lg:p-8">
+        <main className="p-4 md:p-6 lg:p-8 overflow-y-auto">
           {children}
         </main>
       </div>
