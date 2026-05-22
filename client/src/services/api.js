@@ -1,56 +1,42 @@
-const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
-const getHeaders = () => {
+
+const BASE_URL = import.meta.env.VITE_API_URL || "/api";
+
+const getHeaders = (includeAuth = true) => {
   const headers = {
     "Content-Type": "application/json",
   };
-  const token = localStorage.getItem("token");
-  if (token) {
-    headers["Authorization"] = `Bearer ${token}`;
+
+  if (includeAuth) {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
+    }
   }
+
   return headers;
 };
 
 const handleResponse = async (response) => {
   const data = await response.json();
+
   if (!response.ok) {
     throw new Error(data.message || "Something went wrong");
   }
+
   return data;
 };
 
 export const api = {
-  get: async (endpoint) => {
-    const response = await fetch(`${BASE_URL}${endpoint}`, {
-      method: "GET",
-      headers: getHeaders(),
-    });
-    return handleResponse(response);
-  },
-
-  post: async (endpoint, body) => {
+  post: async (endpoint, body, includeAuth = true) => {
     const response = await fetch(`${BASE_URL}${endpoint}`, {
       method: "POST",
-      headers: getHeaders(),
+      headers: getHeaders(includeAuth),
       body: JSON.stringify(body),
     });
-    return handleResponse(response);
-  },
 
-  put: async (endpoint, body) => {
-    const response = await fetch(`${BASE_URL}${endpoint}`, {
-      method: "PUT",
-      headers: getHeaders(),
-      body: JSON.stringify(body),
-    });
-    return handleResponse(response);
-  },
-
-  delete: async (endpoint) => {
-    const response = await fetch(`${BASE_URL}${endpoint}`, {
-      method: "DELETE",
-      headers: getHeaders(),
-    });
     return handleResponse(response);
   },
 };
+
