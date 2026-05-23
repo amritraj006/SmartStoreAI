@@ -6,6 +6,7 @@ const {
   updateProduct,
   deleteProduct,
   generateAIProductContent,
+  searchProducts,
 } = require("../controllers/productController");
 const { protect } = require("../utils/authMiddleware");
 
@@ -17,6 +18,8 @@ router.route("/")
 
 router.route("/generate-ai")
   .post(protect, generateAIProductContent);
+
+router.get("/search", protect, searchProducts);
 
 router.route("/:id")
   .get(protect, getProductById)

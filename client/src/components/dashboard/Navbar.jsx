@@ -1,7 +1,57 @@
-import { FaBell, FaSearch, FaBars, FaSignOutAlt, FaCog } from "react-icons/fa";
-import { useState } from "react";
+import {
+  FaBell,
+  FaSearch,
+  FaBars,
+  FaSignOutAlt,
+  FaCog,
+  FaSpinner,
+  FaExclamationCircle,
+  FaExclamationTriangle,
+  FaCheckCircle,
+  FaInfoCircle,
+  FaShoppingCart,
+  FaTimes,
+  FaBox,
+} from "react-icons/fa";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
+import { api } from "../../services/api";
+
+// Debounce hook
+function useDebounce(value, delay) {
+  const [debounced, setDebounced] = useState(value);
+  useEffect(() => {
+    const t = setTimeout(() => setDebounced(value), delay);
+    return () => clearTimeout(t);
+  }, [value, delay]);
+  return debounced;
+}
+
+// Relative time formatter
+function timeAgo(isoStr) {
+  const diff = Date.now() - new Date(isoStr).getTime();
+  const m = Math.floor(diff / 60000);
+  if (m < 1) return "just now";
+  if (m < 60) return `${m}m ago`;
+  const h = Math.floor(m / 60);
+  if (h < 24) return `${h}h ago`;
+  return `${Math.floor(h / 24)}d ago`;
+}
+
+const NOTIF_ICONS = {
+  critical: <FaExclamationCircle className="text-red-400 mt-0.5 shrink-0 text-sm" />,
+  warning:  <FaExclamationTriangle className="text-amber-400 mt-0.5 shrink-0 text-sm" />,
+  success:  <FaShoppingCart className="text-emerald-400 mt-0.5 shrink-0 text-sm" />,
+  info:     <FaInfoCircle className="text-blue-400 mt-0.5 shrink-0 text-sm" />,
+};
+
+const NOTIF_COLORS = {
+  critical: "border-l-red-400 bg-red-50/60",
+  warning:  "border-l-amber-400 bg-amber-50/60",
+  success:  "border-l-emerald-400 bg-emerald-50/60",
+  info:     "border-l-blue-400 bg-blue-50/40",
+};
 
 function Navbar({ onMenuClick }) {
   const [showNotifications, setShowNotifications] = useState(false);
@@ -9,102 +59,335 @@ function Navbar({ onMenuClick }) {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
+  // ── Search state ────────────────────────────────
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [searchLoading, setSearchLoading] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
+  const searchRef = useRef(null);
+  const debouncedQuery = useDebounce(searchQuery, 300);
+
+  // ── Notifications state ──────────────────────────
+  const [notifications, setNotifications] = useState([]);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [notifLoading, setNotifLoading] = useState(false);
+  const [readIds, setReadIds] = useState(new Set());
+  const notifRef = useRef(null);
+  const profileRef = useRef(null);
+
   const handleLogout = () => {
     logout();
     navigate("/login");
   };
 
-  const userInitial = user?.name ? user.name.charAt(0).toUpperCase() : "A";
-  const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.name || "Admin")}&background=2563eb&color=fff&rounded=true&size=40`;
+  const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(
+    user?.name || "Admin"
+  )}&background=6366f1&color=fff&rounded=true&size=40`;
+
+  // ── Search effect ────────────────────────────────
+  useEffect(() => {
+    if (!debouncedQuery.trim()) {
+      setSearchResults([]);
+      setShowSearch(false);
+      return;
+    }
+    const fetch = async () => {
+      setSearchLoading(true);
+      try {
+        const data = await api.get(`/products/search?q=${encodeURIComponent(debouncedQuery)}`);
+        if (data.success) {
+          setSearchResults(data.products);
+          setShowSearch(true);
+        }
+      } catch {
+        setSearchResults([]);
+      } finally {
+        setSearchLoading(false);
+      }
+    };
+    fetch();
+  }, [debouncedQuery]);
+
+  // ── Load notifications ───────────────────────────
+  const loadNotifications = useCallback(async () => {
+    setNotifLoading(true);
+    try {
+      const data = await api.get("/notifications");
+      if (data.success) {
+        setNotifications(data.notifications);
+        setUnreadCount(data.unreadCount);
+      }
+    } catch {
+      setNotifications([]);
+    } finally {
+      setNotifLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadNotifications();
+    const interval = setInterval(loadNotifications, 60000); // refresh every 60s
+    return () => clearInterval(interval);
+  }, [loadNotifications]);
+
+  // ── Close dropdowns on outside click ────────────
+  useEffect(() => {
+    function handleClick(e) {
+      if (searchRef.current && !searchRef.current.contains(e.target)) {
+        setShowSearch(false);
+      }
+      if (notifRef.current && !notifRef.current.contains(e.target)) {
+        setShowNotifications(false);
+      }
+      if (profileRef.current && !profileRef.current.contains(e.target)) {
+        setShowProfileMenu(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
+
+  const getStatus = (stock) => {
+    if (stock > 10) return { label: "In Stock", cls: "text-emerald-600 bg-emerald-50" };
+    if (stock > 0)  return { label: "Low Stock", cls: "text-amber-600 bg-amber-50" };
+    return { label: "Out of Stock", cls: "text-red-600 bg-red-50" };
+  };
+
+  const markAllRead = () => {
+    const ids = new Set(notifications.map((n) => n.id));
+    setReadIds(ids);
+    setUnreadCount(0);
+  };
+
+  const effectiveUnread = Math.max(0, unreadCount - readIds.size);
 
   return (
-    <nav className="bg-white/80 backdrop-blur-md sticky top-0 z-10 border-b border-gray-100">
-      <div className="px-4 md:px-6 lg:px-8 py-4 flex items-center justify-between">
-        {/* Left section */}
-        <div className="flex items-center gap-4">
+    <nav className="glass sticky top-0 z-10 border-b border-white/30">
+      <div className="px-4 md:px-6 lg:px-8 py-3 flex items-center justify-between gap-4">
+        {/* Left: hamburger + search */}
+        <div className="flex items-center gap-4 flex-1">
           <button
             onClick={onMenuClick}
-            className="lg:hidden text-gray-600 hover:text-gray-900 cursor-pointer"
+            className="lg:hidden text-gray-500 hover:text-gray-800 transition-colors p-1"
           >
-            <FaBars className="text-xl" />
+            <FaBars className="text-lg" />
           </button>
-          
+
           {/* Search bar */}
-          <div className="hidden md:flex items-center bg-gray-50 rounded-xl px-4 py-2 min-w-[300px]">
-            <FaSearch className="text-gray-400 text-sm" />
-            <input
-              type="text"
-              placeholder="Search products, orders..."
-              className="bg-transparent ml-3 outline-none text-sm flex-1"
-            />
+          <div className="hidden md:block flex-1 max-w-sm relative" ref={searchRef}>
+            <div className="flex items-center bg-slate-50 border border-slate-200 rounded-2xl px-4 py-2.5 gap-3 hover:border-indigo-300 focus-within:border-indigo-400 focus-within:ring-2 focus-within:ring-indigo-100 transition-all">
+              {searchLoading ? (
+                <FaSpinner className="text-indigo-400 text-sm animate-spin shrink-0" />
+              ) : (
+                <FaSearch className="text-slate-400 text-sm shrink-0" />
+              )}
+              <input
+                type="text"
+                placeholder="Search products..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="bg-transparent outline-none text-sm flex-1 text-slate-700 placeholder-slate-400"
+              />
+              {searchQuery && (
+                <button
+                  onClick={() => { setSearchQuery(""); setShowSearch(false); }}
+                  className="text-slate-400 hover:text-slate-600 transition-colors"
+                >
+                  <FaTimes className="text-xs" />
+                </button>
+              )}
+            </div>
+
+            {/* Search Results Dropdown */}
+            {showSearch && (
+              <div className="search-dropdown animate-slide-down">
+                {searchResults.length === 0 ? (
+                  <div className="p-4 text-center text-sm text-slate-400">
+                    No products found for "{searchQuery}"
+                  </div>
+                ) : (
+                  <>
+                    <div className="px-4 py-2.5 border-b border-slate-100">
+                      <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+                        {searchResults.length} result{searchResults.length !== 1 ? "s" : ""} found
+                      </p>
+                    </div>
+                    {searchResults.map((p) => {
+                      const st = getStatus(p.stock);
+                      return (
+                        <button
+                          key={p._id}
+                          onClick={() => {
+                            navigate("/products");
+                            setShowSearch(false);
+                            setSearchQuery("");
+                          }}
+                          className="w-full flex items-center gap-3 px-4 py-3 hover:bg-indigo-50/70 transition-colors text-left border-b border-slate-50 last:border-0"
+                        >
+                          <div className="w-8 h-8 bg-indigo-50 border border-slate-100 rounded-lg flex items-center justify-center shrink-0 overflow-hidden">
+                            {p.image ? (
+                              <img src={p.image} alt={p.title} className="w-full h-full object-cover" />
+                            ) : (
+                              <FaBox className="text-indigo-500 text-xs" />
+                            )}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-semibold text-slate-800 truncate">{p.title}</p>
+                            <p className="text-xs text-slate-400 capitalize">{p.category}</p>
+                          </div>
+                          <div className="text-right shrink-0">
+                            <p className="text-sm font-bold text-slate-800">${p.price}</p>
+                            <span className={`text-xs font-semibold px-1.5 py-0.5 rounded-full ${st.cls}`}>
+                              {st.label}
+                            </span>
+                          </div>
+                        </button>
+                      );
+                    })}
+                    <div className="p-2 border-t border-slate-100">
+                      <button
+                        onClick={() => { navigate("/products"); setShowSearch(false); setSearchQuery(""); }}
+                        className="w-full text-center text-xs font-semibold text-indigo-600 hover:text-indigo-700 py-1.5 transition-colors"
+                      >
+                        View all products →
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
+            )}
           </div>
         </div>
 
-        {/* Right section */}
-        <div className="flex items-center gap-4">
-          {/* Notification bell */}
-          <div className="relative">
+        {/* Right: notifications + profile */}
+        <div className="flex items-center gap-2">
+          {/* Notification Bell */}
+          <div className="relative" ref={notifRef}>
             <button
-              onClick={() => setShowNotifications(!showNotifications)}
-              className="relative p-2 rounded-xl hover:bg-gray-100 transition-colors cursor-pointer"
+              onClick={() => {
+                setShowNotifications(!showNotifications);
+                if (!showNotifications) loadNotifications();
+              }}
+              className="relative p-2.5 rounded-xl hover:bg-slate-100 transition-colors"
             >
-              <FaBell className="text-gray-600 text-lg" />
-              <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+              <FaBell className="text-slate-500 text-lg" />
+              {effectiveUnread > 0 && (
+                <span className="absolute top-1.5 right-1.5 w-4 h-4 bg-red-500 rounded-full text-white text-[9px] font-bold flex items-center justify-center animate-badge-pop">
+                  {effectiveUnread > 9 ? "9+" : effectiveUnread}
+                </span>
+              )}
             </button>
 
-            {/* Notification dropdown */}
             {showNotifications && (
-              <div className="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-xl border border-gray-100 z-20 p-2">
-                <div className="p-3 border-b border-gray-100">
-                  <h3 className="font-semibold text-gray-800 text-sm">Notifications</h3>
+              <div className="absolute right-0 mt-2 w-96 bg-white rounded-2xl shadow-2xl border border-slate-100 z-50 overflow-hidden animate-slide-down">
+                {/* Header */}
+                <div className="px-5 py-4 flex items-center justify-between border-b border-slate-100">
+                  <div className="flex items-center gap-2">
+                    <FaBell className="text-indigo-500 text-sm" />
+                    <h3 className="font-bold text-slate-800 text-sm">Notifications</h3>
+                    {effectiveUnread > 0 && (
+                      <span className="bg-red-100 text-red-600 text-xs font-bold px-2 py-0.5 rounded-full">
+                        {effectiveUnread} new
+                      </span>
+                    )}
+                  </div>
+                  {effectiveUnread > 0 && (
+                    <button
+                      onClick={markAllRead}
+                      className="text-xs text-indigo-600 hover:text-indigo-700 font-semibold flex items-center gap-1"
+                    >
+                      <FaCheckCircle className="text-xs" /> Mark all read
+                    </button>
+                  )}
                 </div>
-                <div className="p-4 text-center text-gray-500 text-xs">
-                  All systems operational. Seeded demo data is active.
+
+                {/* Body */}
+                <div className="max-h-80 overflow-y-auto">
+                  {notifLoading ? (
+                    <div className="flex items-center justify-center py-10 gap-2 text-slate-400">
+                      <FaSpinner className="animate-spin text-indigo-500" />
+                      <span className="text-sm">Loading...</span>
+                    </div>
+                  ) : notifications.length === 0 ? (
+                    <div className="py-10 text-center text-sm text-slate-400">
+                      No notifications
+                    </div>
+                  ) : (
+                    <div className="stagger">
+                      {notifications.map((n) => {
+                        const isRead = readIds.has(n.id) || n.read;
+                        return (
+                          <div
+                            key={n.id}
+                            className={`flex gap-3 px-5 py-3.5 border-l-[3px] border-b border-slate-50/80 last:border-b-0 animate-fade-in-up transition-all ${
+                              NOTIF_COLORS[n.type] || "border-l-slate-300 bg-white"
+                            } ${isRead ? "opacity-60" : ""}`}
+                          >
+                            {NOTIF_ICONS[n.type]}
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center justify-between gap-2">
+                                <p className="text-xs font-bold text-slate-700">{n.title}</p>
+                                <span className="text-[10px] text-slate-400 shrink-0">{timeAgo(n.time)}</span>
+                              </div>
+                              <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">{n.message}</p>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+
+                {/* Footer */}
+                <div className="px-5 py-3 border-t border-slate-100 bg-slate-50/50">
+                  <button
+                    onClick={() => { loadNotifications(); }}
+                    className="text-xs text-indigo-600 hover:text-indigo-700 font-semibold"
+                  >
+                    ↻ Refresh notifications
+                  </button>
                 </div>
               </div>
             )}
           </div>
 
-          {/* User profile dropdown */}
-          <div className="relative">
+          {/* User profile */}
+          <div className="relative" ref={profileRef}>
             <div
               onClick={() => setShowProfileMenu(!showProfileMenu)}
-              className="flex items-center gap-3 cursor-pointer hover:bg-gray-50 rounded-xl p-2 transition-colors select-none"
+              className="flex items-center gap-2.5 cursor-pointer hover:bg-slate-50 rounded-xl px-2 py-1.5 transition-colors select-none"
             >
               <img
                 src={avatarUrl}
                 alt="User avatar"
-                className="w-10 h-10 rounded-xl object-cover border border-blue-100"
+                className="w-9 h-9 rounded-xl object-cover border-2 border-indigo-100"
               />
               <div className="hidden md:block">
-                <p className="font-semibold text-gray-800 text-sm">{user?.name || "Admin User"}</p>
-                <p className="text-xs text-gray-500">{user?.storeName || "SmartStore AI"}</p>
+                <p className="font-bold text-slate-800 text-sm leading-tight">
+                  {user?.name || "Admin User"}
+                </p>
+                <p className="text-xs text-slate-400">{user?.storeName || "SmartStore AI"}</p>
               </div>
             </div>
 
-            {/* Dropdown Menu */}
             {showProfileMenu && (
-              <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-100 z-20 py-2">
-                <div className="px-4 py-2 border-b border-gray-50">
-                  <p className="text-xs text-gray-400 font-semibold uppercase tracking-wider">Signed in as</p>
-                  <p className="text-sm font-bold text-gray-800 truncate mt-0.5">{user?.email}</p>
+              <div className="absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-2xl border border-slate-100 z-50 py-2 animate-slide-down">
+                <div className="px-4 py-3 border-b border-slate-50">
+                  <p className="text-xs text-slate-400 font-bold uppercase tracking-wider">Signed in as</p>
+                  <p className="text-sm font-bold text-slate-800 truncate mt-0.5">{user?.email}</p>
                 </div>
-                
                 <Link
                   to="/settings"
                   onClick={() => setShowProfileMenu(false)}
-                  className="flex items-center gap-2 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                  className="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 transition-colors"
                 >
-                  <FaCog className="text-gray-400" />
-                  Settings
+                  <FaCog className="text-slate-400" /> Settings
                 </Link>
-                
                 <button
                   onClick={handleLogout}
-                  className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50/50 transition-colors text-left cursor-pointer border-t border-gray-50"
+                  className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50/60 transition-colors text-left border-t border-slate-50"
                 >
-                  <FaSignOutAlt className="text-red-400" />
-                  Sign Out
+                  <FaSignOutAlt className="text-red-400" /> Sign Out
                 </button>
               </div>
             )}

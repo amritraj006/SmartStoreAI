@@ -1,6 +1,6 @@
 
 
-const BASE_URL = import.meta.env.VITE_API_URL || "/api";
+const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8873/api";
 
 const getHeaders = (includeAuth = true) => {
   const headers = {

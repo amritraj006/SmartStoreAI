@@ -132,6 +132,32 @@ const generateAIProductContent = async (req, res) => {
   }
 };
 
+// @desc    Search products by title or category
+// @route   GET /api/products/search?q=...
+// @access  Private
+const searchProducts = async (req, res) => {
+  const { q } = req.query;
+
+  if (!q || q.trim() === "") {
+    return res.json({ success: true, products: [] });
+  }
+
+  try {
+    const regex = new RegExp(q.trim(), "i");
+    const products = await Product.find({
+      user: req.user._id,
+      $or: [{ title: regex }, { category: regex }],
+    })
+      .select("title category price stock image")
+      .limit(10);
+
+    return res.json({ success: true, products });
+  } catch (error) {
+    console.error("Search Products Error:", error);
+    return res.status(500).json({ success: false, message: "Search failed" });
+  }
+};
+
 module.exports = {
   getProducts,
   getProductById,
@@ -139,4 +165,5 @@ module.exports = {
   updateProduct,
   deleteProduct,
   generateAIProductContent,
+  searchProducts,
 };
