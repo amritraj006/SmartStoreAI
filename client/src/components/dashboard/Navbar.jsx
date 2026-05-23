@@ -71,7 +71,15 @@ function Navbar({ onMenuClick }) {
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [notifLoading, setNotifLoading] = useState(false);
-  const [readIds, setReadIds] = useState(new Set());
+  // Persist readIds in localStorage so they survive re-fetches & navigation
+  const [readIds, setReadIds] = useState(() => {
+    try {
+      const stored = localStorage.getItem("notif_readIds");
+      return stored ? new Set(JSON.parse(stored)) : new Set();
+    } catch {
+      return new Set();
+    }
+  });
   const notifRef = useRef(null);
   const profileRef = useRef(null);
 
@@ -115,7 +123,12 @@ function Navbar({ onMenuClick }) {
       const data = await api.get("/notifications");
       if (data.success) {
         setNotifications(data.notifications);
-        setUnreadCount(data.unreadCount);
+        // Recalculate unread count using persisted readIds from localStorage
+        setReadIds(prev => {
+          const freshUnread = data.notifications.filter(n => !prev.has(n.id)).length;
+          setUnreadCount(freshUnread);
+          return prev;
+        });
       }
     } catch {
       setNotifications([]);
@@ -154,12 +167,18 @@ function Navbar({ onMenuClick }) {
   };
 
   const markAllRead = () => {
-    const ids = new Set(notifications.map((n) => n.id));
-    setReadIds(ids);
+    setReadIds(prev => {
+      const next = new Set([...prev, ...notifications.map(n => n.id)]);
+      try {
+        localStorage.setItem("notif_readIds", JSON.stringify([...next]));
+      } catch {}
+      return next;
+    });
     setUnreadCount(0);
   };
 
-  const effectiveUnread = Math.max(0, unreadCount - readIds.size);
+  // effectiveUnread is always derived from server list minus locally-read IDs
+  const effectiveUnread = unreadCount;
 
   return (
     <nav className="glass sticky top-0 z-10 border-b border-slate-800/80 shadow-lg">

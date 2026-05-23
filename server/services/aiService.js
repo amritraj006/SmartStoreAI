@@ -12,7 +12,7 @@ const generateContent = async ({ title, category, price }) => {
     try {
       console.log("Calling Google Gemini API...");
       const response = await fetch(
-        `https://generativeai.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+        `https://generativeai.googleapis.com/v1beta/modelsgemini-1.5-flash/:generateContent?key=${apiKey}`,
         {
           method: "POST",
           headers: {
@@ -67,7 +67,7 @@ Generate description, seoTags, and marketingCaptions for a product titled "${tit
 
   // Graceful Fallback Generator
   console.log("Using local AI generator fallback...");
-  
+
   // Format variables
   const cleanTitle = title || "Premium Product";
   const cleanCategory = category || "General Store";
