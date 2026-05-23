@@ -23,10 +23,10 @@ const SUGGESTION_ICONS = [
 ];
 
 const CARD_STYLES = [
-  "from-amber-50 to-yellow-50 border-amber-200/60",
-  "from-indigo-50 to-blue-50 border-indigo-200/60",
-  "from-violet-50 to-purple-50 border-violet-200/60",
-  "from-rose-50 to-red-50 border-rose-200/60",
+  "from-amber-950/25 to-yellow-950/15 border-amber-900/40 text-amber-250",
+  "from-indigo-950/25 to-blue-950/15 border-indigo-900/40 text-indigo-250",
+  "from-violet-950/25 to-purple-950/15 border-violet-900/40 text-violet-250",
+  "from-rose-950/25 to-red-950/15 border-rose-900/40 text-rose-250",
 ];
 
 function AISuggestions() {
@@ -61,15 +61,15 @@ function AISuggestions() {
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-slate-100 flex flex-col h-full overflow-hidden">
+    <div className="bg-slate-900/60 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-800/80 flex flex-col h-full overflow-hidden">
       {/* Header */}
-      <div className="p-5 border-b border-slate-100 flex items-center justify-between">
+      <div className="p-5 border-b border-slate-800/80 flex items-center justify-between">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-violet-600 rounded-xl flex items-center justify-center shadow shadow-indigo-200">
+          <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-violet-600 rounded-xl flex items-center justify-center shadow shadow-indigo-500/20">
             <FaRobot className="text-white text-sm" />
           </div>
           <div>
-            <h2 className="text-base font-bold text-slate-800">AI Insights</h2>
+            <h2 className="text-base font-bold text-white">AI Insights</h2>
             <p className="text-xs text-slate-400">Smart store recommendations</p>
           </div>
         </div>
@@ -77,7 +77,7 @@ function AISuggestions() {
           onClick={() => fetchSuggestions(true)}
           disabled={isRefreshing}
           title="Refresh AI suggestions"
-          className="p-2 rounded-xl hover:bg-slate-100 text-slate-400 hover:text-indigo-600 transition-all disabled:opacity-40"
+          className="p-2 rounded-xl hover:bg-slate-850 text-slate-400 hover:text-indigo-400 transition-all disabled:opacity-40"
         >
           <FaSync className={`text-sm ${isRefreshing ? "animate-spin" : ""}`} />
         </button>
@@ -112,14 +112,14 @@ function AISuggestions() {
                   <div className="flex items-start gap-3">
                     <div className="mt-0.5 text-base">{SUGGESTION_ICONS[index % SUGGESTION_ICONS.length]}</div>
                     <div className="flex-1">
-                      <p className="text-slate-700 text-xs leading-relaxed">{item}</p>
+                      <p className="text-slate-300 text-xs leading-relaxed">{item}</p>
                       <button
                         onClick={() => handleApply(index)}
                         disabled={applied}
                         className={`mt-2.5 text-xs font-bold flex items-center gap-1 transition-all ${
                           applied
-                            ? "text-emerald-600 cursor-default"
-                            : "text-indigo-600 hover:text-indigo-700"
+                            ? "text-emerald-400 cursor-default"
+                            : "text-indigo-400 hover:text-indigo-300"
                         }`}
                       >
                         {applied ? (
@@ -138,8 +138,8 @@ function AISuggestions() {
       </div>
 
       {/* Footer */}
-      <div className="px-5 py-3 border-t border-slate-100 bg-slate-50/50 flex items-center justify-between">
-        <p className="text-xs text-slate-400">{suggestions.length} insight{suggestions.length !== 1 ? "s" : ""} available</p>
+      <div className="px-5 py-3 border-t border-slate-800 bg-slate-950/40 flex items-center justify-between">
+        <p className="text-xs text-slate-500">{suggestions.length} insight{suggestions.length !== 1 ? "s" : ""} available</p>
         <span className="text-xs font-semibold text-indigo-500 flex items-center gap-1">
           <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
           Live data

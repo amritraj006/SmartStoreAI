@@ -36,8 +36,8 @@ function Analytics() {
   if (loading) {
     return (
       <DashboardLayout>
-        <div className="flex flex-col items-center justify-center min-h-[60vh] text-gray-500 gap-4">
-          <FaSpinner className="animate-spin text-4xl text-blue-600" />
+        <div className="flex flex-col items-center justify-center min-h-[60vh] text-slate-400 gap-4">
+          <FaSpinner className="animate-spin text-4xl text-indigo-500" />
           <p className="text-sm font-medium">Aggregating historical order metrics...</p>
         </div>
       </DashboardLayout>
@@ -47,8 +47,8 @@ function Analytics() {
   if (error) {
     return (
       <DashboardLayout>
-        <div className="bg-red-50 border border-red-100 rounded-2xl p-6 text-red-700 flex items-center gap-3">
-          <FaExclamationCircle className="text-xl shrink-0" />
+        <div className="bg-red-950/40 border border-red-900/50 rounded-2xl p-6 text-red-200 flex items-center gap-3">
+          <FaExclamationCircle className="text-xl shrink-0 text-red-500" />
           <span>{error}</span>
         </div>
       </DashboardLayout>
@@ -73,23 +73,23 @@ function Analytics() {
       <div className="space-y-6">
         {/* Header */}
         <div>
-          <h1 className="text-2xl font-bold text-gray-800">Analytics Dashboard</h1>
-          <p className="text-gray-500 mt-1">Track your store performance metrics</p>
+          <h1 className="text-2xl font-bold text-white">Analytics Dashboard</h1>
+          <p className="text-slate-400 mt-1">Track your store performance metrics</p>
         </div>
 
         {/* Metrics grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {metrics.map((metric, index) => (
-            <div key={index} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+            <div key={index} className="bg-slate-900/60 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-800/80 p-6">
               <div className="flex justify-between items-start">
                 <div>
-                  <p className="text-gray-500 text-sm font-medium">{metric.label}</p>
-                  <p className="text-2xl font-bold text-gray-800 mt-2">{metric.value}</p>
-                  <p className={`text-xs mt-1 ${metric.change === "Calculated" ? "text-gray-400 font-semibold" : "text-green-600"}`}>
+                  <p className="text-slate-400 text-sm font-medium">{metric.label}</p>
+                  <p className="text-2xl font-bold text-white mt-2">{metric.value}</p>
+                  <p className={`text-xs mt-1 ${metric.change === "Calculated" ? "text-slate-500 font-semibold" : "text-emerald-400"}`}>
                     {metric.change}
                   </p>
                 </div>
-                <metric.icon className="text-2xl text-gray-400" />
+                <metric.icon className="text-2xl text-indigo-400/85" />
               </div>
             </div>
           ))}

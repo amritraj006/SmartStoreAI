@@ -5,7 +5,7 @@
 **An AI-powered E-commerce Admin Dashboard built with the MERN Stack**
 
 ![Node.js](https://img.shields.io/badge/Node.js-18+-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
-![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=black)
+![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black)
 ![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
 ![Express](https://img.shields.io/badge/Express.js-4.x-000000?style=for-the-badge&logo=express&logoColor=white)
 ![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-v4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)
@@ -31,10 +31,16 @@
 
 ## ✨ Features
 
+### 🌌 Premium Dark Glassmorphism Theme
+- **Consistent dark aesthetic** (`bg-slate-950`) across every single page, dropdown and modal
+- **Animated futuristic blur blobs** floating in the background for a modern, premium look and feel
+- **Glassmorphic panels** (`backdrop-blur-xl border border-slate-800/80`) that float elegantly over lighting effects
+- **Sleek dark inputs** and glowing indicators to keep forms immersive and uniform
+
 ### 🏠 Dashboard
 - **Animated welcome banner** with live date and quick-action buttons
-- **4 key stats cards** — Revenue, Products, Orders, Customers with trend indicators
-- **Revenue chart** — 6-month historical chart using Recharts
+- **4 key stats cards** — Revenue, Products, Orders, Customers with trend indicators and dynamic neon backplates
+- **Revenue chart** — 6-month historical chart using Chart.js + React Chartjs 2
 - **Quick navigation** shortcuts to Products and Analytics
 
 ### 🔍 Smart Search
@@ -81,9 +87,9 @@
 
 | Layer | Technology |
 |-------|-----------|
-| Frontend | React 18, Vite, Tailwind CSS v4 |
-| State / Routing | React Context, React Router v6 |
-| Charts | Recharts |
+| Frontend | React 19, Vite, Tailwind CSS v4 |
+| State / Routing | React Context, React Router v7 |
+| Charts | Chart.js & React Chartjs 2 |
 | Backend | Node.js, Express.js |
 | Database | MongoDB + Mongoose |
 | Auth | JWT (JSON Web Tokens) |

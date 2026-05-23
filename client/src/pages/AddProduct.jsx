@@ -155,7 +155,7 @@ function AddProduct() {
 
   const AiBadge = ({ field }) =>
     aiGeneratedFields.has(field) ? (
-      <span className="ml-2 inline-flex items-center gap-1 text-[10px] font-bold text-violet-600 bg-violet-50 border border-violet-200 px-2 py-0.5 rounded-full">
+      <span className="ml-2 inline-flex items-center gap-1 text-[10px] font-bold text-violet-400 bg-violet-950/40 border border-violet-900/50 px-2 py-0.5 rounded-full">
         <FaRobot className="text-[8px]" /> AI Generated
       </span>
     ) : null;
@@ -169,23 +169,23 @@ function AddProduct() {
         </div>
       )}
 
-      <div className="max-w-4xl mx-auto">
+      <div className="w-full">
         <button
           onClick={() => navigate("/products")}
-          className="flex items-center gap-2 text-slate-500 hover:text-slate-700 mb-6 font-semibold text-sm transition cursor-pointer select-none"
+          className="flex items-center gap-2 text-slate-400 hover:text-slate-200 mb-6 font-semibold text-sm transition cursor-pointer select-none"
         >
           <FaArrowLeft /> Back to Inventory
         </button>
 
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+        <div className="bg-slate-900/60 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-800/80 overflow-hidden">
           {/* Header */}
-          <div className="p-6 border-b border-slate-100 bg-gradient-to-r from-slate-50 to-white">
+          <div className="p-6 border-b border-slate-800 bg-gradient-to-r from-slate-950/40 to-slate-900/20">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-violet-600 rounded-xl flex items-center justify-center shadow shadow-indigo-200">
-                <FaTag className="text-white text-sm" />
+              <div className="w-10 h-10 bg-indigo-500/10 border border-indigo-500/20 rounded-xl flex items-center justify-center">
+                <FaTag className="text-indigo-400 text-sm" />
               </div>
               <div>
-                <h1 className="text-2xl font-black text-slate-800">Add New Product</h1>
+                <h1 className="text-2xl font-black text-white">Add New Product</h1>
                 <p className="text-slate-400 text-sm mt-0.5">
                   Fill in details below. Use AI to auto-generate copywriting instantly.
                 </p>
@@ -203,16 +203,16 @@ function AddProduct() {
           <form onSubmit={handleSubmit} className="p-6 space-y-6">
             {/* Title */}
             <div>
-              <label className="block text-sm font-bold text-slate-700 mb-2">Product Title *</label>
+              <label className="block text-sm font-bold text-slate-300 mb-2">Product Title *</label>
               <div className="relative group">
-                <FaTag className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-indigo-500 transition-colors" />
+                <FaTag className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-indigo-400 transition-colors" />
                 <input
                   type="text"
                   name="title"
                   value={formData.title}
                   onChange={handleChange}
                   placeholder="e.g., Wireless Noise-Cancelling Headphones"
-                  className="w-full pl-11 pr-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-400 text-sm transition-all"
+                  className="w-full pl-11 pr-4 py-3 bg-slate-950 border border-slate-800 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/35 focus:border-indigo-500 text-sm transition-all"
                   required
                 />
               </div>
@@ -221,9 +221,9 @@ function AddProduct() {
             {/* Price & Stock */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <div>
-                <label className="block text-sm font-bold text-slate-700 mb-2">Price ($) *</label>
+                <label className="block text-sm font-bold text-slate-300 mb-2">Price ($) *</label>
                 <div className="relative">
-                  <FaDollarSign className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+                  <FaDollarSign className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
                   <input
                     type="number"
                     name="price"
@@ -232,15 +232,15 @@ function AddProduct() {
                     placeholder="0.00"
                     min="0"
                     step="0.01"
-                    className="w-full pl-11 pr-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-400 text-sm transition-all"
+                    className="w-full pl-11 pr-4 py-3 bg-slate-950 border border-slate-800 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/35 focus:border-indigo-500 text-sm transition-all"
                     required
                   />
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-bold text-slate-700 mb-2">Stock Quantity *</label>
+                <label className="block text-sm font-bold text-slate-300 mb-2">Stock Quantity *</label>
                 <div className="relative">
-                  <FaBoxes className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+                  <FaBoxes className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-505" />
                   <input
                     type="number"
                     name="stock"
@@ -248,7 +248,7 @@ function AddProduct() {
                     onChange={handleChange}
                     placeholder="100"
                     min="0"
-                    className="w-full pl-11 pr-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-400 text-sm transition-all"
+                    className="w-full pl-11 pr-4 py-3 bg-slate-950 border border-slate-800 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/35 focus:border-indigo-500 text-sm transition-all"
                     required
                   />
                 </div>
@@ -257,12 +257,12 @@ function AddProduct() {
 
             {/* Category */}
             <div>
-              <label className="block text-sm font-bold text-slate-700 mb-2">Category</label>
+              <label className="block text-sm font-bold text-slate-300 mb-2">Category</label>
               <select
                 name="category"
                 value={formData.category}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-400 bg-white text-sm transition-all"
+                className="w-full px-4 py-3 bg-slate-950 border border-slate-800 text-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/35 focus:border-indigo-500 text-sm transition-all"
               >
                 <option value="">Select category</option>
                 <option value="electronics">Electronics</option>
@@ -273,15 +273,15 @@ function AddProduct() {
             </div>
 
             {/* AI Generator Panel */}
-            <div className="bg-gradient-to-r from-indigo-50 via-violet-50 to-indigo-50 border border-indigo-200/60 rounded-2xl p-5">
+            <div className="bg-gradient-to-r from-indigo-950/20 via-violet-950/20 to-indigo-950/20 border border-indigo-900/40 rounded-2xl p-5">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div className="flex items-start gap-3">
-                  <div className="w-9 h-9 bg-gradient-to-br from-indigo-500 to-violet-600 rounded-xl flex items-center justify-center shadow shadow-indigo-300/40 shrink-0">
+                  <div className="w-9 h-9 bg-gradient-to-br from-indigo-500 to-violet-600 rounded-xl flex items-center justify-center shadow shadow-indigo-500/20 shrink-0">
                     <FaMagic className="text-white text-sm" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-indigo-900 text-sm">AI Content Generator</h4>
-                    <p className="text-xs text-indigo-600 mt-0.5">
+                    <h4 className="font-bold text-indigo-200 text-sm">AI Content Generator</h4>
+                    <p className="text-xs text-indigo-400 mt-0.5">
                       Auto-writes description, SEO tags & social captions in seconds.
                     </p>
                   </div>
@@ -290,7 +290,7 @@ function AddProduct() {
                   type="button"
                   onClick={handleAIGenerate}
                   disabled={isGenerating}
-                  className="bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-bold text-sm px-5 py-2.5 rounded-xl flex items-center gap-2 transition-all shadow-md shadow-indigo-200 disabled:opacity-60 shrink-0 cursor-pointer select-none btn-ai-glow"
+                  className="bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-bold text-sm px-5 py-2.5 rounded-xl flex items-center gap-2 transition-all shadow-md shadow-indigo-500/10 disabled:opacity-60 shrink-0 cursor-pointer select-none btn-ai-glow"
                 >
                   {isGenerating ? (
                     <><FaSpinner className="animate-spin text-xs" /> Generating...</>
@@ -304,10 +304,10 @@ function AddProduct() {
               {isGenerating && (
                 <div className="mt-4 animate-fade-in-up">
                   <div className="flex items-center justify-between mb-1.5">
-                    <p className="text-xs font-semibold text-indigo-700">{AI_STEPS[aiStep]}</p>
-                    <p className="text-xs font-bold text-indigo-600">{aiProgress}%</p>
+                    <p className="text-xs font-semibold text-indigo-400">{AI_STEPS[aiStep]}</p>
+                    <p className="text-xs font-bold text-indigo-400">{aiProgress}%</p>
                   </div>
-                  <div className="w-full h-2 bg-indigo-100 rounded-full overflow-hidden">
+                  <div className="w-full h-2 bg-slate-950 rounded-full overflow-hidden">
                     <div
                       className="h-full bg-gradient-to-r from-indigo-500 to-violet-500 rounded-full transition-all duration-500"
                       style={{ width: `${aiProgress}%` }}
@@ -319,19 +319,19 @@ function AddProduct() {
 
             {/* Description */}
             <div>
-              <label className="block text-sm font-bold text-slate-700 mb-2">
+              <label className="block text-sm font-bold text-slate-300 mb-2">
                 Description * <AiBadge field="description" />
               </label>
               <div className="relative">
-                <FaAlignLeft className="absolute left-4 top-4 text-slate-400" />
+                <FaAlignLeft className="absolute left-4 top-4 text-slate-500" />
                 <textarea
                   name="description"
                   value={formData.description}
                   onChange={handleChange}
                   rows="5"
                   placeholder="Describe your product, or click 'Generate with AI' above..."
-                  className={`w-full pl-11 pr-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-400 text-sm transition-all resize-none ${
-                    aiGeneratedFields.has("description") ? "border-violet-300 bg-violet-50/30" : "border-slate-200"
+                  className={`w-full pl-11 pr-4 py-3 bg-slate-950 border text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/35 focus:border-indigo-500 text-sm transition-all resize-none ${
+                    aiGeneratedFields.has("description") ? "border-violet-900/40 bg-violet-950/20" : "border-slate-800"
                   }`}
                   required
                 />
@@ -340,19 +340,19 @@ function AddProduct() {
 
             {/* SEO Tags */}
             <div>
-              <label className="block text-sm font-bold text-slate-700 mb-2">
+              <label className="block text-sm font-bold text-slate-300 mb-2">
                 SEO Tags (comma separated) <AiBadge field="seoTags" />
               </label>
               <div className="relative">
-                <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+                <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
                 <input
                   type="text"
                   name="seoTags"
                   value={formData.seoTags}
                   onChange={handleChange}
                   placeholder="e.g. bluetooth, earbuds, audio, wireless"
-                  className={`w-full pl-11 pr-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-400 text-sm transition-all ${
-                    aiGeneratedFields.has("seoTags") ? "border-violet-300 bg-violet-50/30" : "border-slate-200"
+                  className={`w-full pl-11 pr-4 py-3 bg-slate-950 border text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/35 focus:border-indigo-500 text-sm transition-all ${
+                    aiGeneratedFields.has("seoTags") ? "border-violet-900/40 bg-violet-950/20" : "border-slate-800"
                   }`}
                 />
               </div>
@@ -360,7 +360,7 @@ function AddProduct() {
               {formData.seoTags && (
                 <div className="flex flex-wrap gap-1.5 mt-2">
                   {formData.seoTags.split(",").filter(t => t.trim()).map((tag, i) => (
-                    <span key={i} className="text-xs bg-indigo-50 text-indigo-700 border border-indigo-100 px-2.5 py-1 rounded-full font-semibold">
+                    <span key={i} className="text-xs bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 px-2.5 py-1 rounded-full font-semibold">
                       #{tag.trim()}
                     </span>
                   ))}
@@ -370,19 +370,19 @@ function AddProduct() {
 
             {/* Marketing Caption */}
             <div>
-              <label className="block text-sm font-bold text-slate-700 mb-2">
+              <label className="block text-sm font-bold text-slate-300 mb-2">
                 Social Media Caption <AiBadge field="marketingCaptions" />
               </label>
               <div className="relative">
-                <FaBullhorn className="absolute left-4 top-4 text-slate-400" />
+                <FaBullhorn className="absolute left-4 top-4 text-slate-500" />
                 <textarea
                   name="marketingCaptions"
                   value={formData.marketingCaptions}
                   onChange={handleChange}
                   rows="3"
                   placeholder="AI-generated post for Instagram / Twitter..."
-                  className={`w-full pl-11 pr-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-400 text-sm transition-all resize-none ${
-                    aiGeneratedFields.has("marketingCaptions") ? "border-violet-300 bg-violet-50/30" : "border-slate-200"
+                  className={`w-full pl-11 pr-4 py-3 bg-slate-950 border text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/35 focus:border-indigo-500 text-sm transition-all resize-none ${
+                    aiGeneratedFields.has("marketingCaptions") ? "border-violet-900/40 bg-violet-950/20" : "border-slate-800"
                   }`}
                 />
               </div>
@@ -393,7 +393,7 @@ function AddProduct() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="flex-1 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white py-3.5 rounded-xl hover:shadow-lg transition-all font-bold cursor-pointer text-sm disabled:opacity-50 shadow-md shadow-indigo-200"
+                className="flex-1 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white py-3.5 rounded-xl hover:shadow-lg transition-all font-bold cursor-pointer text-sm disabled:opacity-50 shadow-md shadow-indigo-500/15"
               >
                 {isSubmitting ? (
                   <span className="flex items-center justify-center gap-2">
@@ -404,7 +404,7 @@ function AddProduct() {
               <button
                 type="button"
                 onClick={() => navigate("/products")}
-                className="flex-1 border border-slate-200 text-slate-700 py-3.5 rounded-xl hover:bg-slate-50 transition-colors font-bold cursor-pointer text-sm"
+                className="flex-1 border border-slate-800 bg-slate-900 text-slate-355 py-3.5 rounded-xl hover:bg-slate-800 transition-colors font-bold cursor-pointer text-sm"
               >
                 Cancel
               </button>

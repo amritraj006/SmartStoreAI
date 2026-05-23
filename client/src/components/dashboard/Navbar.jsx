@@ -47,10 +47,10 @@ const NOTIF_ICONS = {
 };
 
 const NOTIF_COLORS = {
-  critical: "border-l-red-400 bg-red-50/60",
-  warning:  "border-l-amber-400 bg-amber-50/60",
-  success:  "border-l-emerald-400 bg-emerald-50/60",
-  info:     "border-l-blue-400 bg-blue-50/40",
+  critical: "border-l-red-500 bg-red-950/20 border-b border-slate-800/50",
+  warning:  "border-l-amber-500 bg-amber-950/20 border-b border-slate-800/50",
+  success:  "border-l-emerald-500 bg-emerald-950/20 border-b border-slate-800/50",
+  info:     "border-l-blue-500 bg-blue-950/20 border-b border-slate-800/50",
 };
 
 function Navbar({ onMenuClick }) {
@@ -148,9 +148,9 @@ function Navbar({ onMenuClick }) {
   }, []);
 
   const getStatus = (stock) => {
-    if (stock > 10) return { label: "In Stock", cls: "text-emerald-600 bg-emerald-50" };
-    if (stock > 0)  return { label: "Low Stock", cls: "text-amber-600 bg-amber-50" };
-    return { label: "Out of Stock", cls: "text-red-600 bg-red-50" };
+    if (stock > 10) return { label: "In Stock", cls: "text-emerald-400 bg-emerald-950/40 border border-emerald-900/50" };
+    if (stock > 0)  return { label: "Low Stock", cls: "text-amber-400 bg-amber-950/40 border border-amber-900/50" };
+    return { label: "Out of Stock", cls: "text-red-400 bg-red-950/40 border border-red-900/50" };
   };
 
   const markAllRead = () => {
@@ -162,36 +162,36 @@ function Navbar({ onMenuClick }) {
   const effectiveUnread = Math.max(0, unreadCount - readIds.size);
 
   return (
-    <nav className="glass sticky top-0 z-10 border-b border-white/30">
+    <nav className="glass sticky top-0 z-10 border-b border-slate-800/80 shadow-lg">
       <div className="px-4 md:px-6 lg:px-8 py-3 flex items-center justify-between gap-4">
         {/* Left: hamburger + search */}
         <div className="flex items-center gap-4 flex-1">
           <button
             onClick={onMenuClick}
-            className="lg:hidden text-gray-500 hover:text-gray-800 transition-colors p-1"
+            className="lg:hidden text-slate-400 hover:text-slate-200 transition-colors p-1"
           >
             <FaBars className="text-lg" />
           </button>
 
           {/* Search bar */}
           <div className="hidden md:block flex-1 max-w-sm relative" ref={searchRef}>
-            <div className="flex items-center bg-slate-50 border border-slate-200 rounded-2xl px-4 py-2.5 gap-3 hover:border-indigo-300 focus-within:border-indigo-400 focus-within:ring-2 focus-within:ring-indigo-100 transition-all">
+            <div className="flex items-center bg-slate-950 border border-slate-800/80 rounded-2xl px-4 py-2.5 gap-3 hover:border-indigo-500/50 focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-500/25 transition-all">
               {searchLoading ? (
                 <FaSpinner className="text-indigo-400 text-sm animate-spin shrink-0" />
               ) : (
-                <FaSearch className="text-slate-400 text-sm shrink-0" />
+                <FaSearch className="text-slate-500 text-sm shrink-0" />
               )}
               <input
                 type="text"
                 placeholder="Search products..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="bg-transparent outline-none text-sm flex-1 text-slate-700 placeholder-slate-400"
+                className="bg-transparent outline-none text-sm flex-1 text-slate-200 placeholder-slate-500"
               />
               {searchQuery && (
                 <button
                   onClick={() => { setSearchQuery(""); setShowSearch(false); }}
-                  className="text-slate-400 hover:text-slate-600 transition-colors"
+                  className="text-slate-400 hover:text-slate-200 transition-colors"
                 >
                   <FaTimes className="text-xs" />
                 </button>
@@ -207,8 +207,8 @@ function Navbar({ onMenuClick }) {
                   </div>
                 ) : (
                   <>
-                    <div className="px-4 py-2.5 border-b border-slate-100">
-                      <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+                    <div className="px-4 py-2.5 border-b border-slate-800">
+                      <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">
                         {searchResults.length} result{searchResults.length !== 1 ? "s" : ""} found
                       </p>
                     </div>
@@ -222,21 +222,21 @@ function Navbar({ onMenuClick }) {
                             setShowSearch(false);
                             setSearchQuery("");
                           }}
-                          className="w-full flex items-center gap-3 px-4 py-3 hover:bg-indigo-50/70 transition-colors text-left border-b border-slate-50 last:border-0"
+                          className="w-full flex items-center gap-3 px-4 py-3 hover:bg-slate-800/60 transition-colors text-left border-b border-slate-800/50 last:border-0"
                         >
-                          <div className="w-8 h-8 bg-indigo-50 border border-slate-100 rounded-lg flex items-center justify-center shrink-0 overflow-hidden">
+                          <div className="w-8 h-8 bg-slate-950 border border-slate-850 rounded-lg flex items-center justify-center shrink-0 overflow-hidden">
                             {p.image ? (
                               <img src={p.image} alt={p.title} className="w-full h-full object-cover" />
                             ) : (
-                              <FaBox className="text-indigo-500 text-xs" />
+                              <FaBox className="text-indigo-400 text-xs" />
                             )}
                           </div>
                           <div className="flex-1 min-w-0">
-                            <p className="text-sm font-semibold text-slate-800 truncate">{p.title}</p>
+                            <p className="text-sm font-semibold text-slate-200 truncate">{p.title}</p>
                             <p className="text-xs text-slate-400 capitalize">{p.category}</p>
                           </div>
                           <div className="text-right shrink-0">
-                            <p className="text-sm font-bold text-slate-800">${p.price}</p>
+                            <p className="text-sm font-bold text-slate-200">${p.price}</p>
                             <span className={`text-xs font-semibold px-1.5 py-0.5 rounded-full ${st.cls}`}>
                               {st.label}
                             </span>
@@ -244,10 +244,10 @@ function Navbar({ onMenuClick }) {
                         </button>
                       );
                     })}
-                    <div className="p-2 border-t border-slate-100">
+                    <div className="p-2 border-t border-slate-800">
                       <button
                         onClick={() => { navigate("/products"); setShowSearch(false); setSearchQuery(""); }}
-                        className="w-full text-center text-xs font-semibold text-indigo-600 hover:text-indigo-700 py-1.5 transition-colors"
+                        className="w-full text-center text-xs font-semibold text-indigo-400 hover:text-indigo-300 py-1.5 transition-colors"
                       >
                         View all products →
                       </button>
@@ -268,9 +268,9 @@ function Navbar({ onMenuClick }) {
                 setShowNotifications(!showNotifications);
                 if (!showNotifications) loadNotifications();
               }}
-              className="relative p-2.5 rounded-xl hover:bg-slate-100 transition-colors"
+              className="relative p-2.5 rounded-xl hover:bg-slate-800 transition-colors"
             >
-              <FaBell className="text-slate-500 text-lg" />
+              <FaBell className="text-slate-400 hover:text-slate-200 text-lg" />
               {effectiveUnread > 0 && (
                 <span className="absolute top-1.5 right-1.5 w-4 h-4 bg-red-500 rounded-full text-white text-[9px] font-bold flex items-center justify-center animate-badge-pop">
                   {effectiveUnread > 9 ? "9+" : effectiveUnread}
@@ -279,14 +279,14 @@ function Navbar({ onMenuClick }) {
             </button>
 
             {showNotifications && (
-              <div className="absolute right-0 mt-2 w-96 bg-white rounded-2xl shadow-2xl border border-slate-100 z-50 overflow-hidden animate-slide-down">
+              <div className="absolute right-0 mt-2 w-96 bg-slate-900/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-800 z-50 overflow-hidden animate-slide-down">
                 {/* Header */}
-                <div className="px-5 py-4 flex items-center justify-between border-b border-slate-100">
+                <div className="px-5 py-4 flex items-center justify-between border-b border-slate-800">
                   <div className="flex items-center gap-2">
-                    <FaBell className="text-indigo-500 text-sm" />
-                    <h3 className="font-bold text-slate-800 text-sm">Notifications</h3>
+                    <FaBell className="text-indigo-400 text-sm" />
+                    <h3 className="font-bold text-slate-200 text-sm">Notifications</h3>
                     {effectiveUnread > 0 && (
-                      <span className="bg-red-100 text-red-600 text-xs font-bold px-2 py-0.5 rounded-full">
+                      <span className="bg-red-950/60 text-red-400 text-xs font-bold px-2 py-0.5 rounded-full border border-red-900/40">
                         {effectiveUnread} new
                       </span>
                     )}
@@ -294,7 +294,7 @@ function Navbar({ onMenuClick }) {
                   {effectiveUnread > 0 && (
                     <button
                       onClick={markAllRead}
-                      className="text-xs text-indigo-600 hover:text-indigo-700 font-semibold flex items-center gap-1"
+                      className="text-xs text-indigo-400 hover:text-indigo-300 font-semibold flex items-center gap-1"
                     >
                       <FaCheckCircle className="text-xs" /> Mark all read
                     </button>
@@ -319,17 +319,17 @@ function Navbar({ onMenuClick }) {
                         return (
                           <div
                             key={n.id}
-                            className={`flex gap-3 px-5 py-3.5 border-l-[3px] border-b border-slate-50/80 last:border-b-0 animate-fade-in-up transition-all ${
-                              NOTIF_COLORS[n.type] || "border-l-slate-300 bg-white"
+                            className={`flex gap-3 px-5 py-3.5 border-l-[3px] border-b border-slate-800/40 last:border-b-0 animate-fade-in-up transition-all ${
+                              NOTIF_COLORS[n.type] || "border-l-slate-600 bg-slate-900"
                             } ${isRead ? "opacity-60" : ""}`}
                           >
                             {NOTIF_ICONS[n.type]}
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center justify-between gap-2">
-                                <p className="text-xs font-bold text-slate-700">{n.title}</p>
-                                <span className="text-[10px] text-slate-400 shrink-0">{timeAgo(n.time)}</span>
+                                <p className="text-xs font-bold text-slate-200">{n.title}</p>
+                                <span className="text-[10px] text-slate-500 shrink-0">{timeAgo(n.time)}</span>
                               </div>
-                              <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">{n.message}</p>
+                              <p className="text-xs text-slate-400 mt-0.5 leading-relaxed">{n.message}</p>
                             </div>
                           </div>
                         );
@@ -339,7 +339,7 @@ function Navbar({ onMenuClick }) {
                 </div>
 
                 {/* Footer */}
-                <div className="px-5 py-3 border-t border-slate-100 bg-slate-50/50">
+                <div className="px-5 py-3 border-t border-slate-800 bg-slate-950/40">
                   <button
                     onClick={() => { loadNotifications(); }}
                     className="text-xs text-indigo-600 hover:text-indigo-700 font-semibold"
@@ -355,15 +355,15 @@ function Navbar({ onMenuClick }) {
           <div className="relative" ref={profileRef}>
             <div
               onClick={() => setShowProfileMenu(!showProfileMenu)}
-              className="flex items-center gap-2.5 cursor-pointer hover:bg-slate-50 rounded-xl px-2 py-1.5 transition-colors select-none"
+              className="flex items-center gap-2.5 cursor-pointer hover:bg-slate-800 rounded-xl px-2 py-1.5 transition-colors select-none"
             >
               <img
                 src={avatarUrl}
                 alt="User avatar"
-                className="w-9 h-9 rounded-xl object-cover border-2 border-indigo-100"
+                className="w-9 h-9 rounded-xl object-cover border-2 border-indigo-500/30"
               />
               <div className="hidden md:block">
-                <p className="font-bold text-slate-800 text-sm leading-tight">
+                <p className="font-bold text-slate-200 text-sm leading-tight">
                   {user?.name || "Admin User"}
                 </p>
                 <p className="text-xs text-slate-400">{user?.storeName || "SmartStore AI"}</p>
@@ -371,21 +371,21 @@ function Navbar({ onMenuClick }) {
             </div>
 
             {showProfileMenu && (
-              <div className="absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-2xl border border-slate-100 z-50 py-2 animate-slide-down">
-                <div className="px-4 py-3 border-b border-slate-50">
+              <div className="absolute right-0 mt-2 w-56 bg-slate-900/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-800 z-50 py-2 animate-slide-down">
+                <div className="px-4 py-3 border-b border-slate-800">
                   <p className="text-xs text-slate-400 font-bold uppercase tracking-wider">Signed in as</p>
-                  <p className="text-sm font-bold text-slate-800 truncate mt-0.5">{user?.email}</p>
+                  <p className="text-sm font-bold text-slate-200 truncate mt-0.5">{user?.email}</p>
                 </div>
                 <Link
                   to="/settings"
                   onClick={() => setShowProfileMenu(false)}
-                  className="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 transition-colors"
+                  className="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-300 hover:bg-slate-800/60 transition-colors"
                 >
                   <FaCog className="text-slate-400" /> Settings
                 </Link>
                 <button
                   onClick={handleLogout}
-                  className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50/60 transition-colors text-left border-t border-slate-50"
+                  className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-950/40 transition-colors text-left border-t border-slate-800"
                 >
                   <FaSignOutAlt className="text-red-400" /> Sign Out
                 </button>

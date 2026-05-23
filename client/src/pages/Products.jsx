@@ -81,9 +81,9 @@ function Products() {
   };
 
   const getStatusStyle = (status) => {
-    if (status === "In Stock")    return "bg-emerald-100 text-emerald-700 border-emerald-200";
-    if (status === "Low Stock")   return "bg-amber-100 text-amber-700 border-amber-200";
-    return "bg-red-100 text-red-700 border-red-200";
+    if (status === "In Stock")    return "bg-emerald-950/40 text-emerald-400 border-emerald-900/50";
+    if (status === "Low Stock")   return "bg-amber-950/40 text-amber-400 border-amber-900/50";
+    return "bg-red-950/40 text-red-400 border-red-900/50";
   };
 
   const handleDelete = async (id, title) => {
@@ -204,7 +204,7 @@ function Products() {
 
   const AiBadge = ({ field }) =>
     aiGeneratedFields.has(field) ? (
-      <span className="ml-2 inline-flex items-center gap-1 text-[10px] font-bold text-violet-600 bg-violet-50 border border-violet-200 px-2 py-0.5 rounded-full">
+      <span className="ml-2 inline-flex items-center gap-1 text-[10px] font-bold text-violet-400 bg-violet-950/40 border border-violet-900/50 px-2 py-0.5 rounded-full">
         <FaRobot className="text-[8px]" /> AI
       </span>
     ) : null;
@@ -218,19 +218,19 @@ function Products() {
         </div>
       )}
 
-      <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+      <div className="bg-slate-900/60 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-800/80 overflow-hidden">
         {/* Header */}
-        <div className="p-6 border-b border-slate-100 bg-gradient-to-r from-slate-50 to-white">
+        <div className="p-6 border-b border-slate-800 bg-gradient-to-r from-slate-950/40 to-slate-900/20">
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
             <div>
-              <h1 className="text-2xl font-black text-slate-800">Products</h1>
-              <p className="text-slate-400 text-sm mt-0.5">
+              <h1 className="text-2xl font-black text-white">Products</h1>
+              <p className="text-slate-450 text-sm mt-0.5">
                 {products.length} products · {filteredProducts.length} shown
               </p>
             </div>
             <button
               onClick={() => navigate("/add-product")}
-              className="bg-gradient-to-r from-indigo-600 to-violet-600 text-white px-5 py-2.5 rounded-xl hover:shadow-lg hover:shadow-indigo-200 transition-all flex items-center gap-2 self-start font-bold text-sm"
+              className="bg-gradient-to-r from-indigo-600 to-violet-600 text-white px-5 py-2.5 rounded-xl hover:shadow-lg hover:shadow-indigo-500/20 transition-all flex items-center gap-2 self-start font-bold text-sm"
             >
               <FaPlus className="text-xs" /> Add Product
             </button>
@@ -238,21 +238,21 @@ function Products() {
         </div>
 
         {/* Search & Filter */}
-        <div className="p-5 border-b border-slate-100 bg-slate-50/40">
+        <div className="p-5 border-b border-slate-800 bg-slate-950/30">
           <div className="flex flex-col md:flex-row gap-3">
             <div className="flex-1 relative">
-              <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm" />
+              <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-sm" />
               <input
                 type="text"
                 placeholder="Search by product name or category..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-11 pr-4 py-2.5 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-400 bg-white text-sm transition-all"
+                className="w-full pl-11 pr-4 py-2.5 border border-slate-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 bg-slate-950 text-slate-200 placeholder-slate-500 text-sm transition-all"
               />
               {searchTerm && (
                 <button
                   onClick={() => setSearchTerm("")}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200"
                 >
                   <FaTimes className="text-xs" />
                 </button>
@@ -261,7 +261,7 @@ function Products() {
             <select
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
-              className="px-4 py-2.5 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/30 bg-white text-sm transition-all"
+              className="px-4 py-2.5 border border-slate-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/30 bg-slate-950 text-slate-300 text-sm transition-all"
             >
               <option value="all">All Statuses</option>
               <option value="in-stock">In Stock (&gt;10)</option>
@@ -288,35 +288,35 @@ function Products() {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-slate-50 border-b border-slate-100">
+              <thead className="bg-slate-950/40 border-b border-slate-800">
                 <tr>
                   {["Product", "Category", "Price", "Stock", "Status", "Actions"].map((h) => (
-                    <th key={h} className="text-left px-6 py-4 text-xs font-black text-slate-500 uppercase tracking-widest">
+                    <th key={h} className="text-left px-6 py-4 text-xs font-black text-slate-450 uppercase tracking-widest">
                       {h}
                     </th>
                   ))}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-50">
+              <tbody className="divide-y divide-slate-800/60">
                 {filteredProducts.map((product) => {
                   const status = getStatus(product.stock);
                   return (
-                    <tr key={product._id} className="hover:bg-indigo-50/30 transition-colors group animate-fade-in-up">
+                    <tr key={product._id} className="hover:bg-slate-800/35 transition-colors group animate-fade-in-up">
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
-                          <div className="w-9 h-9 bg-gradient-to-br from-indigo-100 to-violet-100 rounded-xl flex items-center justify-center shrink-0">
+                          <div className="w-9 h-9 bg-indigo-500/10 border border-indigo-500/20 rounded-xl flex items-center justify-center shrink-0">
                             <FaBox className="text-indigo-400 text-sm" />
                           </div>
-                          <span className="font-bold text-slate-800 text-sm">{product.title}</span>
+                          <span className="font-bold text-slate-200 text-sm">{product.title}</span>
                         </div>
                       </td>
-                      <td className="px-6 py-4 text-slate-500 text-sm capitalize">
-                        <span className="bg-slate-100 text-slate-600 px-2.5 py-1 rounded-lg text-xs font-semibold">
+                      <td className="px-6 py-4 text-slate-400 text-sm capitalize">
+                        <span className="bg-slate-950 text-slate-400 border border-slate-850 px-2.5 py-1 rounded-lg text-xs font-semibold">
                           {product.category || "—"}
                         </span>
                       </td>
-                      <td className="px-6 py-4 font-black text-slate-800">${product.price}</td>
-                      <td className="px-6 py-4 text-slate-500 text-sm font-medium">{product.stock} units</td>
+                      <td className="px-6 py-4 font-black text-white">${product.price}</td>
+                      <td className="px-6 py-4 text-slate-300 text-sm font-medium">{product.stock} units</td>
                       <td className="px-6 py-4">
                         <span className={`px-3 py-1 rounded-full text-xs font-bold border ${getStatusStyle(status)}`}>
                           {status}
@@ -327,21 +327,21 @@ function Products() {
                           <button
                             onClick={() => setViewingProduct(product)}
                             title="View AI Copy"
-                            className="p-2 rounded-lg text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 transition-all"
+                            className="p-2 rounded-lg text-slate-400 hover:text-indigo-400 hover:bg-slate-800 transition-all"
                           >
                             <FaEye className="text-sm" />
                           </button>
                           <button
                             onClick={() => openEditModal(product)}
                             title="Edit product"
-                            className="p-2 rounded-lg text-slate-500 hover:text-emerald-600 hover:bg-emerald-50 transition-all"
+                            className="p-2 rounded-lg text-slate-400 hover:text-emerald-450 hover:bg-emerald-950/30 transition-all"
                           >
                             <FaEdit className="text-sm" />
                           </button>
                           <button
                             onClick={() => handleDelete(product._id, product.title)}
                             title="Delete product"
-                            className="p-2 rounded-lg text-slate-500 hover:text-red-600 hover:bg-red-50 transition-all"
+                            className="p-2 rounded-lg text-slate-400 hover:text-red-450 hover:bg-red-950/30 transition-all"
                           >
                             <FaTrash className="text-sm" />
                           </button>
@@ -358,18 +358,18 @@ function Products() {
 
       {/* VIEW MODAL */}
       {viewingProduct && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl max-w-2xl w-full max-h-[85vh] overflow-y-auto shadow-2xl relative border border-slate-100 animate-fade-in-up">
-            <div className="p-6 border-b border-slate-100 flex items-start justify-between gap-4">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-slate-950 rounded-3xl max-w-2xl w-full max-h-[85vh] overflow-y-auto shadow-2xl relative border border-slate-800 animate-fade-in-up">
+            <div className="p-6 border-b border-slate-800 flex items-start justify-between gap-4">
               <div>
-                <h2 className="text-xl font-black text-slate-800">{viewingProduct.title}</h2>
-                <span className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1 block">
+                <h2 className="text-xl font-black text-white">{viewingProduct.title}</h2>
+                <span className="text-xs font-bold text-indigo-400 uppercase tracking-widest mt-1 block">
                   {viewingProduct.category}
                 </span>
               </div>
               <button
                 onClick={() => setViewingProduct(null)}
-                className="p-2 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-all shrink-0"
+                className="p-2 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-900 transition-all shrink-0"
               >
                 <FaTimes />
               </button>
@@ -377,43 +377,43 @@ function Products() {
 
             <div className="p-6 space-y-6">
               <div>
-                <h4 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Description</h4>
-                <p className="text-slate-600 text-sm leading-relaxed bg-slate-50 rounded-2xl p-4 border border-slate-100">
-                  {viewingProduct.description || <span className="italic text-slate-400">No description.</span>}
+                <h4 className="text-xs font-black text-slate-450 uppercase tracking-widest mb-2">Description</h4>
+                <p className="text-slate-300 text-sm leading-relaxed bg-slate-900/60 rounded-2xl p-4 border border-slate-800">
+                  {viewingProduct.description || <span className="italic text-slate-550">No description.</span>}
                 </p>
               </div>
               <div>
-                <h4 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-2">SEO Meta Tags</h4>
+                <h4 className="text-xs font-black text-slate-455 uppercase tracking-widest mb-2">SEO Meta Tags</h4>
                 <div className="flex flex-wrap gap-2">
                   {viewingProduct.seoTags?.length > 0 ? (
                     viewingProduct.seoTags.map((tag, idx) => (
-                      <span key={idx} className="bg-indigo-50 text-indigo-700 px-3 py-1 rounded-xl text-xs font-bold border border-indigo-100">
+                      <span key={idx} className="bg-indigo-500/10 text-indigo-400 px-3 py-1 rounded-xl text-xs font-bold border border-indigo-500/20">
                         #{tag}
                       </span>
                     ))
                   ) : (
-                    <span className="text-xs text-slate-400 italic">No SEO tags generated.</span>
+                    <span className="text-xs text-slate-555 italic">No SEO tags generated.</span>
                   )}
                 </div>
               </div>
               <div>
-                <h4 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Social Marketing Caption</h4>
-                <p className="text-slate-600 text-sm leading-relaxed bg-violet-50/60 border border-violet-100 rounded-2xl p-4 font-mono select-all">
-                  {viewingProduct.marketingCaptions || <span className="italic text-slate-400">No caption generated.</span>}
+                <h4 className="text-xs font-black text-slate-455 uppercase tracking-widest mb-2">Social Marketing Caption</h4>
+                <p className="text-violet-300 text-sm leading-relaxed bg-violet-950/20 border border-violet-900/40 rounded-2xl p-4 font-mono select-all">
+                  {viewingProduct.marketingCaptions || <span className="italic text-slate-555">No caption generated.</span>}
                 </p>
               </div>
             </div>
 
-            <div className="p-5 border-t border-slate-100 flex justify-end gap-3">
+            <div className="p-5 border-t border-slate-800 flex justify-end gap-3">
               <button
                 onClick={() => { setViewingProduct(null); openEditModal(viewingProduct); }}
-                className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl transition text-sm flex items-center gap-2"
+                className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl transition text-sm flex items-center gap-2"
               >
                 <FaEdit className="text-xs" /> Edit Product
               </button>
               <button
                 onClick={() => setViewingProduct(null)}
-                className="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl transition text-sm"
+                className="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 font-bold rounded-xl transition text-sm"
               >
                 Close
               </button>
@@ -424,24 +424,24 @@ function Products() {
 
       {/* EDIT MODAL */}
       {editingProduct && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl max-w-3xl w-full max-h-[92vh] overflow-y-auto shadow-2xl relative border border-slate-100 animate-fade-in-up">
-            <div className="p-6 border-b border-slate-100 flex items-center justify-between">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-slate-950 rounded-3xl max-w-3xl w-full max-h-[92vh] overflow-y-auto shadow-2xl relative border border-slate-800 animate-fade-in-up">
+            <div className="p-6 border-b border-slate-800 flex items-center justify-between">
               <div>
-                <h2 className="text-xl font-black text-slate-800">Edit Product</h2>
+                <h2 className="text-xl font-black text-white">Edit Product</h2>
                 <p className="text-xs text-slate-400 mt-0.5">Modify details or regenerate with AI</p>
               </div>
               <button
                 onClick={() => setEditingProduct(null)}
-                className="p-2 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-all"
+                className="p-2 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-900 transition-all"
               >
                 <FaTimes />
               </button>
             </div>
 
             {submitError && (
-              <div className="mx-6 mt-4 p-4 bg-red-50 border border-red-100 rounded-xl flex items-center gap-3 text-red-700 text-sm">
-                <FaExclamationTriangle className="shrink-0" />
+              <div className="mx-6 mt-4 p-4 bg-red-955/40 border border-red-900/50 rounded-xl flex items-center gap-3 text-red-200 text-sm">
+                <FaExclamationTriangle className="shrink-0 text-red-500" />
                 <span>{submitError}</span>
               </div>
             )}
@@ -449,57 +449,57 @@ function Products() {
             <form onSubmit={handleEditSubmit} className="p-6 space-y-5">
               {/* Title */}
               <div>
-                <label className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-2">Product Title</label>
+                <label className="block text-xs font-black text-slate-455 uppercase tracking-widest mb-2">Product Title</label>
                 <input
                   type="text"
                   required
                   value={editFormData.title}
                   onChange={(e) => setEditFormData({ ...editFormData, title: e.target.value })}
-                  className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-400 text-sm focus:outline-none transition-all"
+                  className="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl focus:ring-2 focus:ring-indigo-500/35 focus:border-indigo-500 text-sm focus:outline-none text-white transition-all"
                 />
               </div>
 
               {/* Price & Stock */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-2">Price ($)</label>
+                  <label className="block text-xs font-black text-slate-455 uppercase tracking-widest mb-2">Price ($)</label>
                   <input
                     type="number" required min="0"
                     value={editFormData.price}
                     onChange={(e) => setEditFormData({ ...editFormData, price: e.target.value })}
-                    className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-400 text-sm focus:outline-none transition-all"
+                    className="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl focus:ring-2 focus:ring-indigo-500/35 focus:border-indigo-500 text-sm focus:outline-none text-white transition-all"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-2">Stock Level</label>
+                  <label className="block text-xs font-black text-slate-455 uppercase tracking-widest mb-2">Stock Level</label>
                   <input
                     type="number" required min="0"
                     value={editFormData.stock}
                     onChange={(e) => setEditFormData({ ...editFormData, stock: e.target.value })}
-                    className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-400 text-sm focus:outline-none transition-all"
+                    className="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl focus:ring-2 focus:ring-indigo-500/35 focus:border-indigo-500 text-sm focus:outline-none text-white transition-all"
                   />
                 </div>
               </div>
 
               {/* Category */}
               <div>
-                <label className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-2">Category</label>
+                <label className="block text-xs font-black text-slate-455 uppercase tracking-widest mb-2">Category</label>
                 <input
                   type="text"
                   value={editFormData.category}
                   onChange={(e) => setEditFormData({ ...editFormData, category: e.target.value })}
-                  className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-400 text-sm focus:outline-none transition-all"
+                  className="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl focus:ring-2 focus:ring-indigo-500/35 focus:border-indigo-500 text-sm focus:outline-none text-white transition-all"
                 />
               </div>
 
               {/* AI regenerate panel */}
-              <div className="bg-gradient-to-r from-indigo-50 to-violet-50 border border-indigo-200/60 rounded-2xl p-4">
+              <div className="bg-gradient-to-r from-indigo-950/20 to-violet-950/20 border border-indigo-900/40 rounded-2xl p-4">
                 <div className="flex items-center justify-between gap-3">
                   <div className="flex items-center gap-2">
-                    <FaMagic className="text-indigo-500" />
+                    <FaMagic className="text-indigo-400" />
                     <div>
-                      <p className="text-xs font-bold text-indigo-800">AI Content Engine</p>
-                      <p className="text-[11px] text-indigo-500">Rewrites description, SEO & captions</p>
+                      <p className="text-xs font-bold text-indigo-250">AI Content Engine</p>
+                      <p className="text-[11px] text-indigo-455">Rewrites description, SEO & captions</p>
                     </div>
                   </div>
                   <button
@@ -515,10 +515,10 @@ function Products() {
                 {isRegenerating && (
                   <div className="mt-3 animate-fade-in-up">
                     <div className="flex items-center justify-between mb-1">
-                      <p className="text-[11px] font-semibold text-indigo-600">{AI_STEPS[aiStep]}</p>
-                      <p className="text-[11px] font-bold text-indigo-600">{aiProgress}%</p>
+                      <p className="text-[11px] font-semibold text-indigo-400">{AI_STEPS[aiStep]}</p>
+                      <p className="text-[11px] font-bold text-indigo-400">{aiProgress}%</p>
                     </div>
-                    <div className="w-full h-1.5 bg-indigo-100 rounded-full overflow-hidden">
+                    <div className="w-full h-1.5 bg-slate-900 rounded-full overflow-hidden">
                       <div
                         className="h-full bg-gradient-to-r from-indigo-500 to-violet-500 rounded-full transition-all duration-500"
                         style={{ width: `${aiProgress}%` }}
@@ -530,22 +530,22 @@ function Products() {
 
               {/* Description */}
               <div>
-                <label className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-2">
+                <label className="block text-xs font-black text-slate-455 uppercase tracking-widest mb-2">
                   Description <AiBadge field="description" />
                 </label>
                 <textarea
                   rows="4" required
                   value={editFormData.description}
                   onChange={(e) => setEditFormData({ ...editFormData, description: e.target.value })}
-                  className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-400 text-sm focus:outline-none transition-all resize-none ${
-                    aiGeneratedFields.has("description") ? "border-violet-300 bg-violet-50/30" : "border-slate-200"
+                  className={`w-full px-4 py-3 bg-slate-950 border rounded-xl focus:ring-2 focus:ring-indigo-500/35 focus:border-indigo-500 text-sm focus:outline-none text-white transition-all resize-none ${
+                    aiGeneratedFields.has("description") ? "border-violet-900/40 bg-violet-950/20" : "border-slate-800"
                   }`}
                 />
               </div>
 
               {/* SEO Tags */}
               <div>
-                <label className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-2">
+                <label className="block text-xs font-black text-slate-455 uppercase tracking-widest mb-2">
                   SEO Tags (comma separated) <AiBadge field="seoTags" />
                 </label>
                 <input
@@ -553,14 +553,14 @@ function Products() {
                   value={editFormData.seoTags}
                   onChange={(e) => setEditFormData({ ...editFormData, seoTags: e.target.value })}
                   placeholder="wireless, audio, headphones"
-                  className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-400 text-sm focus:outline-none transition-all ${
-                    aiGeneratedFields.has("seoTags") ? "border-violet-300 bg-violet-50/30" : "border-slate-200"
+                  className={`w-full px-4 py-3 bg-slate-950 border rounded-xl focus:ring-2 focus:ring-indigo-500/35 focus:border-indigo-500 text-sm focus:outline-none text-white transition-all ${
+                    aiGeneratedFields.has("seoTags") ? "border-violet-900/40 bg-violet-950/20" : "border-slate-800"
                   }`}
                 />
                 {editFormData.seoTags && (
                   <div className="flex flex-wrap gap-1.5 mt-2">
                     {editFormData.seoTags.split(",").filter(t => t.trim()).map((tag, i) => (
-                      <span key={i} className="text-xs bg-indigo-50 text-indigo-700 border border-indigo-100 px-2.5 py-0.5 rounded-full font-semibold">
+                      <span key={i} className="text-xs bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 px-2.5 py-0.5 rounded-full font-semibold">
                         #{tag.trim()}
                       </span>
                     ))}
@@ -570,15 +570,15 @@ function Products() {
 
               {/* Marketing Caption */}
               <div>
-                <label className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-2">
+                <label className="block text-xs font-black text-slate-455 uppercase tracking-widest mb-2">
                   Marketing Caption <AiBadge field="marketingCaptions" />
                 </label>
                 <textarea
                   rows="2"
                   value={editFormData.marketingCaptions}
                   onChange={(e) => setEditFormData({ ...editFormData, marketingCaptions: e.target.value })}
-                  className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-400 text-sm focus:outline-none transition-all resize-none ${
-                    aiGeneratedFields.has("marketingCaptions") ? "border-violet-300 bg-violet-50/30" : "border-slate-200"
+                  className={`w-full px-4 py-3 bg-slate-950 border rounded-xl focus:ring-2 focus:ring-indigo-500/35 focus:border-indigo-500 text-sm focus:outline-none text-white transition-all resize-none ${
+                    aiGeneratedFields.has("marketingCaptions") ? "border-violet-900/40 bg-violet-950/20" : "border-slate-800"
                   }`}
                 />
               </div>
@@ -587,7 +587,7 @@ function Products() {
                 <button
                   type="submit"
                   disabled={isSaving}
-                  className="flex-1 bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-bold py-3 rounded-xl hover:shadow-lg transition-all text-sm disabled:opacity-50"
+                  className="flex-1 bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-bold py-3 rounded-xl hover:shadow-lg transition-all text-sm disabled:opacity-50 cursor-pointer"
                 >
                   {isSaving ? (
                     <span className="flex items-center justify-center gap-2">
@@ -598,7 +598,7 @@ function Products() {
                 <button
                   type="button"
                   onClick={() => setEditingProduct(null)}
-                  className="flex-1 border border-slate-200 text-slate-700 font-bold py-3 rounded-xl hover:bg-slate-50 transition-colors text-sm"
+                  className="flex-1 border border-slate-800 bg-slate-900 text-slate-350 hover:bg-slate-800 font-bold py-3 rounded-xl transition-colors text-sm cursor-pointer"
                 >
                   Cancel
                 </button>

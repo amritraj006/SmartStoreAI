@@ -20,7 +20,7 @@ function Sidebar({ onClose }) {
   ];
 
   return (
-    <div className="w-72 h-screen bg-gradient-to-b from-slate-900 via-slate-900 to-slate-800 flex flex-col sidebar-scroll overflow-y-auto">
+    <div className="w-72 h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 flex flex-col sidebar-scroll overflow-y-auto border-r border-slate-800/80">
       {/* Logo */}
       <div className="p-6 border-b border-white/10 flex items-center justify-between">
         <div className="flex items-center gap-3">

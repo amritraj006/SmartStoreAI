@@ -209,56 +209,56 @@ function Dashboard() {
 
       {/* Quick Actions */}
       <div className="mt-8">
-        <h2 className="text-lg font-black text-slate-800 mb-4">Quick Actions</h2>
+        <h2 className="text-lg font-black text-white mb-4">Quick Actions</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <button
             onClick={() => navigate("/add-product")}
-            className="group flex items-center justify-between bg-white border border-slate-100 hover:border-indigo-200 hover:shadow-md rounded-2xl p-5 transition-all text-left"
+            className="group flex items-center justify-between bg-slate-900/60 backdrop-blur-xl border border-slate-800/80 hover:border-indigo-500/50 hover:shadow-2xl rounded-2xl p-5 transition-all text-left"
           >
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-indigo-50 rounded-xl flex items-center justify-center">
-                <FaPlus className="text-indigo-500" />
+              <div className="w-10 h-10 bg-indigo-500/10 border border-indigo-500/20 rounded-xl flex items-center justify-center">
+                <FaPlus className="text-indigo-400" />
               </div>
               <div>
-                <p className="font-bold text-slate-800 text-sm">Add Product</p>
+                <p className="font-bold text-slate-200 text-sm">Add Product</p>
                 <p className="text-xs text-slate-400">Launch AI descriptions</p>
               </div>
             </div>
-            <FaArrowRight className="text-slate-300 group-hover:text-indigo-400 transition-colors shrink-0" />
+            <FaArrowRight className="text-slate-500 group-hover:text-indigo-400 transition-colors shrink-0" />
           </button>
           
           <button
             onClick={() => navigate("/analytics")}
-            className="group flex items-center justify-between bg-white border border-slate-100 hover:border-violet-200 hover:shadow-md rounded-2xl p-5 transition-all text-left"
+            className="group flex items-center justify-between bg-slate-900/60 backdrop-blur-xl border border-slate-800/80 hover:border-violet-500/50 hover:shadow-2xl rounded-2xl p-5 transition-all text-left"
           >
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-violet-50 rounded-xl flex items-center justify-center">
-                <FaChartBar className="text-violet-500" />
+              <div className="w-10 h-10 bg-violet-500/10 border border-violet-500/20 rounded-xl flex items-center justify-center">
+                <FaChartBar className="text-violet-400" />
               </div>
               <div>
-                <p className="font-bold text-slate-800 text-sm">View Analytics</p>
+                <p className="font-bold text-slate-200 text-sm">View Analytics</p>
                 <p className="text-xs text-slate-400">Track store conversions</p>
               </div>
             </div>
-            <FaArrowRight className="text-slate-300 group-hover:text-violet-400 transition-colors shrink-0" />
+            <FaArrowRight className="text-slate-500 group-hover:text-violet-400 transition-colors shrink-0" />
           </button>
 
           <button
             onClick={() => {
               showToast("Syncing with sales channels... All order flows operational! 📦");
             }}
-            className="group flex items-center justify-between bg-white border border-slate-100 hover:border-orange-200 hover:shadow-md rounded-2xl p-5 transition-all text-left"
+            className="group flex items-center justify-between bg-slate-900/60 backdrop-blur-xl border border-slate-800/80 hover:border-orange-500/50 hover:shadow-2xl rounded-2xl p-5 transition-all text-left"
           >
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-orange-50 rounded-xl flex items-center justify-center">
-                <FaShoppingCart className="text-orange-500" />
+              <div className="w-10 h-10 bg-orange-500/10 border border-orange-500/20 rounded-xl flex items-center justify-center">
+                <FaShoppingCart className="text-orange-400" />
               </div>
               <div>
-                <p className="font-bold text-slate-800 text-sm">Manage Orders</p>
+                <p className="font-bold text-slate-200 text-sm">Manage Orders</p>
                 <p className="text-xs text-slate-400">Process shipping & sales</p>
               </div>
             </div>
-            <FaArrowRight className="text-slate-300 group-hover:text-orange-400 transition-colors shrink-0" />
+            <FaArrowRight className="text-slate-500 group-hover:text-orange-400 transition-colors shrink-0" />
           </button>
         </div>
       </div>

@@ -27,10 +27,10 @@ function RevenueChart({ labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"], cha
       {
         label: "Revenue",
         data: chartData,
-        borderColor: "#2563eb",
-        backgroundColor: "rgba(37, 99, 235, 0.05)",
+        borderColor: "#6366f1",
+        backgroundColor: "rgba(99, 102, 241, 0.1)",
         borderWidth: 3,
-        pointBackgroundColor: "#2563eb",
+        pointBackgroundColor: "#6366f1",
         pointBorderColor: "#fff",
         pointBorderWidth: 2,
         pointRadius: 4,
@@ -64,10 +64,11 @@ function RevenueChart({ labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"], cha
     scales: {
       y: {
         grid: {
-          color: "#e5e7eb",
+          color: "rgba(255, 255, 255, 0.05)",
           drawBorder: false,
         },
         ticks: {
+          color: "#94a3b8",
           callback: function(value) {
             return "$" + value.toLocaleString();
           },
@@ -77,19 +78,22 @@ function RevenueChart({ labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"], cha
         grid: {
           display: false,
         },
+        ticks: {
+          color: "#94a3b8",
+        },
       },
     },
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm p-6 border border-gray-100">
+    <div className="bg-slate-900/60 backdrop-blur-xl rounded-2xl shadow-2xl p-6 border border-slate-800/80">
       <div className="flex justify-between items-center mb-6">
         <div>
-          <h2 className="text-xl font-bold text-gray-800">Revenue Analytics</h2>
-          <p className="text-sm text-gray-500 mt-1">Monthly revenue trends</p>
+          <h2 className="text-xl font-bold text-white">Revenue Analytics</h2>
+          <p className="text-sm text-slate-400 mt-1">Monthly revenue trends</p>
         </div>
         <div className="flex gap-2">
-          <select className="text-sm border border-gray-200 rounded-lg px-3 py-1.5 bg-white">
+          <select className="text-sm border border-slate-800 bg-slate-950 text-slate-350 rounded-lg px-3 py-1.5 focus:outline-none focus:border-indigo-500">
             <option>Last 6 months</option>
             <option>Last year</option>
           </select>
